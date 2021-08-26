@@ -95,12 +95,13 @@ fn kelvin_to_celcius(kel: f64) -> f64 {
 
 impl Forecast {
     async fn get(city: &String, country_code: &String) -> Result<Self, ExitFailure> {
-        let url:String = format!("https://api.openweathermap.org/data/2.5/weather?q={},{}&appid=9b5c6a4883984c9aecdd88503ae2516f", city, country_code);
+        let url: String = format!(
+            "https://api.openweathermap.org/data/2.5/weather?q={},{}&appid={Token}",
+            city, country_code
+        );
         let url: Url = Url::parse(&*url)?;
 
         let resp = reqwest::get(url).await?.json::<Forecast>().await?;
         Ok(resp)
     }
 }
-//api.openweathermap.org/data/2.5/weather?q={city name},{state code},{country code}&appid={API key}
-//9b5c6a4883984c9aecdd88503ae2516f
