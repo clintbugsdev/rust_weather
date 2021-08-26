@@ -3,6 +3,9 @@ use reqwest::Url;
 use serde_derive::{Deserialize, Serialize};
 use structopt::StructOpt;
 
+#[macro_use]
+extern crate dotenv_codegen;
+
 #[derive(StructOpt)]
 struct Cli {
     city: String,
@@ -96,8 +99,10 @@ fn kelvin_to_celcius(kel: f64) -> f64 {
 impl Forecast {
     async fn get(city: &String, country_code: &String) -> Result<Self, ExitFailure> {
         let url: String = format!(
-            "https://api.openweathermap.org/data/2.5/weather?q={},{}&appid={Token}",
-            city, country_code
+            "https://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}",
+            city,
+            country_code,
+            dotenv!("API_KEY")
         );
         let url: Url = Url::parse(&*url)?;
 
